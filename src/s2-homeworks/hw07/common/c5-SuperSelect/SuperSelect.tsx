@@ -20,7 +20,6 @@ const SuperSelect: React.FC<SuperSelectPropsType> = ({
     className,
     onChange,
     onChangeOption,
-    value,
     ...restProps
 }) => {
     const mappedOptions: any[] = options
@@ -39,7 +38,6 @@ const SuperSelect: React.FC<SuperSelectPropsType> = ({
 
     const onChangeCallback = (e: ChangeEvent<HTMLSelectElement>) => {
         const selectedItem = Number(e.currentTarget.value)
-        debugger
         onChangeOption?.(selectedItem)
     }
 
@@ -49,7 +47,6 @@ const SuperSelect: React.FC<SuperSelectPropsType> = ({
         <select
             className={finalSelectClassName}
             onChange={onChangeCallback}
-            value={value}
             {...restProps}
 
         >
