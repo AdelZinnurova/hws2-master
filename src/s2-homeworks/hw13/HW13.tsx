@@ -37,29 +37,34 @@ const HW13 = () => {
                 setCode('Код 200!')
                 setImage(success200)
 
-                const infoText = res.data?.info ?? '...всё ок)'
-                setText(`${infoText}\nкод 200 - обычно означает что скорее всего всё ок)`)
+                setText('...всё ок)')
                 setInfo('')
 
             })
             .catch((error) => {
-
-                if (!axios.isAxiosError(error)) {
+                if (!axios.isAxiosError(error) || !error.response) {
                     setCode('Error!')
                     setImage(errorUnknown)
-                    setText('Network Error\nAxiosError')
-                    return
-                } else if (error.response?.status === 400) {
+                    setText('Network Error')
+                }
+                const status = error.response.status
+
+                if (status === 400) {
                     setCode('Ошибка 400!')
                     setImage(error400)
-                    setText(error.message)
-                    setInfo('')
-                } else if (error.response?.status === 500) {
+                    setText('Ты не отправил success в body вообще!')
+                } else if (status === 500) {
                     setCode('Ошибка 500!')
                     setImage(error500)
-                    setText(error.message)
-                    setInfo('')
+                    setText('эмитация ошибки на сервере')
+                } else {
+                    setCode('Error!')
+                    setImage(errorUnknown)
+                    setText('Network Error')
                 }
+            })
+            .finally(() => {
+                setInfo('')
             })
     }
 
