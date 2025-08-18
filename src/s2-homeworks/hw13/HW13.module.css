@@ -17,6 +17,8 @@
 }
 
 .text {
+    white-space: pre-line;
 }
 .info {
+    white-space: pre-line;
 }
