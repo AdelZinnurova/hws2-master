@@ -36,36 +36,26 @@ const HW13 = () => {
             .then((res) => {
                 setCode('Код 200!')
                 setImage(success200)
-
-                setText('...всё ок) код 200 - обычно означает что скорее всего всё ок)')
-                setInfo('')
+                setText(res.data.errorText)
+                setInfo(res.data.info)
 
             })
-            .catch((error) => {
-                if (!axios.isAxiosError(error) || !error.response) {
-                    setCode('Error!')
-                    setImage(errorUnknown)
-                    setText('Network Error AxiosError')
-                    return
-                }
-                const status = error.response.status
+            .catch((e) => {
+                // дописать
+                console.log(e);
+                let errorImg = e?.response?.status === 500
+                    ? error500
+                    : e?.response?.status === 400
+                        ? error400 : errorUnknown
 
-                if (status === 400) {
-                    setCode('Ошибка 400!')
-                    setImage(error400)
-                    setText('Ты не отправил success в body вообще! ошибка 400 - обычно означает что скорее всего фронт отправил что-то не то на бэк!')
-                } else if (status === 500) {
-                    setCode('Ошибка 500!')
-                    setImage(error500)
-                    setText('эмитация ошибки на сервере ошибка 500 - обычно означает что что-то сломалось на сервере, например база данных)')
-                } else {
-                    setCode('Error!')
-                    setImage(errorUnknown)
-                    setText('Network Error AxiosError')
-                }
-            })
-            .finally(() => {
-                setInfo('')
+                let errorText = e?.response?.data?.errorText || 'Network Error'
+                let errorInfo = e?.response?.data?.info || e.name
+                let errorCode = e?.response?.status ? ('Ошибка '  + e.response.status ) : 'Error!'
+
+                setText(errorText)
+                setInfo(errorInfo)
+                setCode(errorCode)
+                setImage(errorImg)
             })
     }
 
